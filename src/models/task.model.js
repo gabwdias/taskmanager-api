@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 
-const TaskSchema = Schema({
+const TaskSchema = new Schema({
     description: {
         type: String,
         required: true,

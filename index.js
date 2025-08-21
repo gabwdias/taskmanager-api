@@ -35,6 +35,16 @@ app.post("/tasks", async (req, res) => {
     }
 });
 
+app.delete("/tasks/:id", async (req, res) => {
+    try {
+        const taskId = req.params.id;
+        const deletedTask = await TaskModel.findByIdAndDelete(taskId);
+        res.status(200).send(deletedTask);
+    } catch (error) {
+        res.status(500).send(error);
+    }
+});
+
 //Server Config
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
