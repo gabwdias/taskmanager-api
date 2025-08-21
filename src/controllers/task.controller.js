@@ -1,4 +1,5 @@
 import notFoundError from "../errors/database.errors.js";
+import notEditableFieldError from "../errors/general.errors.js";
 import TaskModel from "../models/task.model.js";
 
 class TaskController {
@@ -64,18 +65,15 @@ class TaskController {
                 return notFoundError(this.res);
             }
 
-            const allowedUpdates = ["isCompleted"];
+            const allowedFields = ["isCompleted"];
             const requestedUpdates = Object.keys(this.req.body);
 
             for (const update of requestedUpdates) {
-                if (allowedUpdates.includes(update)) {
+                if (allowedFields.includes(update)) {
                     taskToUpdate[update] = this.req.body[update];
                 } else {
-                    return this.res
-                        .status(500)
-                        .send(
-                            `One or more fields are not editable.\nEditable fields: ${allowedUpdates}`
-                        );
+                    console.log("ERROR");
+                    return notEditableFieldError(this.res, allowedFields);
                 }
             }
 

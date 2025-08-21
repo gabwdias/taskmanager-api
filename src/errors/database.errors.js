@@ -1,4 +1,5 @@
 const notFoundError = (res, message) => {
+    console.log("Error handling");
     if (message) {
         return res.status(404).send(message);
     }
