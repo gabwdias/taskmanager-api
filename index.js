@@ -36,8 +36,17 @@ app.post("/tasks", async (req, res) => {
 });
 
 app.delete("/tasks/:id", async (req, res) => {
+    console.log("Starting delete");
     try {
         const taskId = req.params.id;
+        console.log("Task ID: ", taskId);
+
+        const taskToDelete = await TaskModel.findById(taskId);
+        console.log("Task to delete: ", taskToDelete);
+        if (!taskToDelete) {
+            return res.status(500).send("Task Not found");
+        }
+
         const deletedTask = await TaskModel.findByIdAndDelete(taskId);
         res.status(200).send(deletedTask);
     } catch (error) {
