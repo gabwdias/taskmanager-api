@@ -1,7 +1,4 @@
-const notEditableFieldError = (res, allowedFields, message) => {
-    if (message) {
-        return res.status(500).send(message);
-    }
+const notEditableFieldError = (res, allowedFields) => {
     return res
         .status(500)
         .send(
@@ -9,6 +6,8 @@ const notEditableFieldError = (res, allowedFields, message) => {
         );
 };
 
-const anotherFunction = () => {};
+const generalError = (res, message) => {
+    return res.status(500).send(message);
+};
 
 export { notEditableFieldError, anotherFunction };
