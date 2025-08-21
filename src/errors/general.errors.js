@@ -9,4 +9,6 @@ const notEditableFieldError = (res, allowedFields, message) => {
         );
 };
 
-export default notEditableFieldError;
+const anotherFunction = () => {};
+
+export { notEditableFieldError, anotherFunction };

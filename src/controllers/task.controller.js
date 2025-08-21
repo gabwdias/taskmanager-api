@@ -1,5 +1,6 @@
-import notFoundError from "../errors/database.errors.js";
-import notEditableFieldError from "../errors/general.errors.js";
+import mongoose, { mongo } from "mongoose";
+import { invalidIDError, notFoundError } from "../errors/database.errors.js";
+import { notEditableFieldError } from "../errors/general.errors.js";
 import TaskModel from "../models/task.model.js";
 
 class TaskController {
@@ -26,6 +27,9 @@ class TaskController {
             }
             this.res.status(200).send(task);
         } catch (error) {
+            if (error instanceof mongoose.Error.CastError) {
+                return invalidIDError(this.res);
+            }
             this.res.status(500).send(error.message);
         }
     }
@@ -52,6 +56,9 @@ class TaskController {
             const deletedTask = await TaskModel.findByIdAndDelete(taskId);
             this.res.status(200).send(deletedTask);
         } catch (error) {
+            if (error instanceof mongoose.Error.CastError) {
+                return invalidIDError(this.res);
+            }
             this.res.status(500).send(error.message);
         }
     }
@@ -80,7 +87,9 @@ class TaskController {
             await taskToUpdate.save();
             return this.res.status(200).send(taskToUpdate);
         } catch (error) {
-            console.log(error);
+            if (error instanceof mongoose.Error.CastError) {
+                return invalidIDError(this.res);
+            }
             this.res.status(500).send(error.message);
         }
     }
