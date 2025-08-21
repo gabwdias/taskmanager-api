@@ -1,3 +1,4 @@
+import notFoundError from "../errors/database.errors.js";
 import TaskModel from "../models/task.model.js";
 
 class TaskController {
@@ -20,8 +21,8 @@ class TaskController {
             const taskId = this.req.params.id;
             const task = await TaskModel.findById(taskId);
             if (!task) {
+                return notFoundError(this.res);
             }
-            return this.res.status(404).send("Task not found");
             this.res.status(200).send(task);
         } catch (error) {
             this.res.status(500).send(error.message);
@@ -44,7 +45,7 @@ class TaskController {
             const taskId = this.req.params.id;
             const taskToDelete = await TaskModel.findById(taskId);
             if (!taskToDelete) {
-                return this.res.status(500).send("Task Not found");
+                return notFoundError(this.res);
             }
 
             const deletedTask = await TaskModel.findByIdAndDelete(taskId);
@@ -60,7 +61,7 @@ class TaskController {
             const taskToUpdate = await TaskModel.findById(taskId);
 
             if (!taskToUpdate) {
-                return this.res.status(500).send("Task Not found");
+                return notFoundError(this.res);
             }
 
             const allowedUpdates = ["isCompleted"];
