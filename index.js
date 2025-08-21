@@ -25,10 +25,14 @@ app.get("/tasks", async (req, res) => {
 });
 
 app.post("/tasks", async (req, res) => {
-    const newTask = new TaskModel(req.body);
-    await newTask.save();
+    try {
+        const newTask = new TaskModel(req.body);
+        await newTask.save();
 
-    res.status(201).send(newTask);
+        res.status(201).send(newTask);
+    } catch (error) {
+        res.status(500).send(error);
+    }
 });
 
 //Server Config
