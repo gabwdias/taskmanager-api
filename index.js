@@ -67,6 +67,34 @@ app.delete("/tasks/:id", async (req, res) => {
     }
 });
 
+app.patch("/tasks/:id", async (req, res) => {
+    try {
+        const taskId = req.params.id;
+        const taskToUpdate = await TaskModel.findById(taskId);
+
+        const allowedUpdates = ["isCompleted"];
+        const requestedUpdates = Object.keys(req.body);
+
+        for (const update of requestedUpdates) {
+            if (allowedUpdates.includes(update)) {
+                taskToUpdate[update] = req.body[update];
+            } else {
+                return res
+                    .status(500)
+                    .send(
+                        `One or more fields are not editable.\nEditable fields: ${allowedUpdates}`
+                    );
+            }
+        }
+
+        await taskToUpdate.save();
+        return res.status(200).send(taskToUpdate);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send(error.message);
+    }
+});
+
 //Server Config
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
