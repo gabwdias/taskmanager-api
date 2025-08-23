@@ -1,5 +1,6 @@
 import express, { json } from "express";
 import dotenv from "dotenv";
+import cors from "cors";
 import connectToDatabase from "./src/database/mongoose.database.js";
 import TaskRouter from "./src/routes/task.routes.js";
 
@@ -11,6 +12,7 @@ connectToDatabase();
 //NodeJS Config
 const PORT = process.env.PORT || 8000;
 const app = express();
+app.use(cors());
 app.use(json());
 
 //Routes
