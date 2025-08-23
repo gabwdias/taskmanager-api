@@ -10,4 +10,4 @@ const generalError = (res, message) => {
     return res.status(500).send(message);
 };
 
-export { notEditableFieldError, anotherFunction };
+export { notEditableFieldError, generalError };
